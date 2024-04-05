@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   ChevronLeft,
   ChevronsLeft,
@@ -23,6 +25,26 @@ dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
 const AttendeeList = () => {
+
+  const [page,setPage] = useState<number>(1)
+  const totalPages = Math.ceil(attendees.length) / 10
+
+  const goToPrevPage = () => {
+    setPage(page - 1)
+  }
+
+  const goToNextPage = () => {
+    setPage(page + 1)
+  }
+
+  const goToLastPage = () => {
+    setPage(totalPages)
+  }
+  const goToFirstPage = () => {
+    setPage(1)
+  }
+
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-3 items-center ">
@@ -53,7 +75,7 @@ const AttendeeList = () => {
             <TableHeader style={{ width: 64 }}></TableHeader>
           </TableRow>
         </thead>
-        {attendees.map((attendee) => {
+        {attendees.slice((page - 1) * 10 , page * 10).map((attendee) => {
           return (
             <tbody key={attendee.id}>
               <TableRow className="border-b border-white/10">
@@ -96,26 +118,26 @@ const AttendeeList = () => {
         <tfoot>
           <TableRow>
             <TableCell className="py-3 px-4 text-sm text-zinc-300" colSpan={3}>
-              Mostrando 10 de 228 itens
+              Mostrando 10 de {attendees.length} itens
             </TableCell>
             <TableCell
               className="py-3 px-4 text-sm text-zinc-300 text-right"
               colSpan={3}
             >
               <div className="inline-flex items-center gap-8">
-                <span> Página 1 de 23 </span>
+                <span> Página {page} de {totalPages} </span>
 
                 <div className="flex gap-1.5">
-                  <IconButton className="bg-white/10 border border-white/10 rounded-md p-1.5">
+                  <IconButton onClick={goToFirstPage} disabled={page === 1} className="bg-white/10 border border-white/10 rounded-md p-1.5">
                     <ChevronsLeft className="size-4" />
                   </IconButton>
-                  <IconButton className="bg-white/10 border border-white/10 rounded-md p-1.5">
+                  <IconButton onClick={goToPrevPage} disabled={page === 1}  className="bg-white/10 border border-white/10 rounded-md p-1.5">
                     <ChevronLeft className="size-4" />
                   </IconButton>
-                  <IconButton className="bg-white/10 border border-white/10 rounded-md p-1.5">
+                  <IconButton onClick={goToNextPage} disabled={page === totalPages} className="bg-white/10 border border-white/10 rounded-md p-1.5">
                     <ChevronRight className="size-4" />
                   </IconButton>
-                  <IconButton className="bg-white/10 border border-white/10 rounded-md p-1.5">
+                  <IconButton onClick={goToLastPage} disabled={page === totalPages} className="bg-white/10 border border-white/10 rounded-md p-1.5">
                     <ChevronsRight className="size-4" />
                   </IconButton>
                 </div>
