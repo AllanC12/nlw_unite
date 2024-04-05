@@ -11,6 +11,16 @@ import IconButton from "./IconButton";
 import Table from "./table/Table";
 import TableHeader from "./table/TableHeader";
 import TableCell from "./table/TableCell";
+import TableRow from "./table/TableRow";
+
+import { attendees } from "../data/attendee";
+
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
+
+dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 const AttendeeList = () => {
   return (
@@ -29,7 +39,7 @@ const AttendeeList = () => {
 
       <Table>
         <thead>
-          <tr className="border-b border-white/10">
+          <TableRow className="border-b border-white/10">
             <TableHeader style={{ width: 48 }}>
               <input
                 type="checkbox"
@@ -41,12 +51,12 @@ const AttendeeList = () => {
             <TableHeader>Data de inscrição</TableHeader>
             <TableHeader>Data do check-in</TableHeader>
             <TableHeader style={{ width: 64 }}></TableHeader>
-          </tr>
+          </TableRow>
         </thead>
-        {Array.from({ length: 10 }).map((_, index) => {
+        {attendees.map((attendee) => {
           return (
-            <tbody key={index}>
-              <tr className="border-b border-white/10">
+            <tbody key={attendee.id}>
+              <TableRow className="border-b border-white/10">
                 <TableCell>
                   <input
                     type="checkbox"
@@ -54,21 +64,21 @@ const AttendeeList = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  13123
+                  {attendee.id}
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-col gap-1">
                     <span className="font-semibold text-white">
-                      Allan Cândido Veríssimo
+                      {attendee.name}
                     </span>
-                    <span>alladevfront@gmail.com</span>
+                    <span>{attendee.email}</span>
                   </div>
                 </TableCell>
                 <TableCell>
-                  7 dias atrás
+                  {dayjs().to(attendee.createdAt)}
                 </TableCell>
                 <TableCell>
-                  3 dias atrás
+                  {dayjs().to(attendee.checkIn)}
                 </TableCell>
                 <TableCell>
                   <IconButton
@@ -78,17 +88,17 @@ const AttendeeList = () => {
                     <MoreHorizontal className="size-4" />
                   </IconButton>
                 </TableCell>
-              </tr>
+              </TableRow>
             </tbody>
           );
         })}
 
         <tfoot>
-          <tr>
+          <TableRow>
             <TableCell className="py-3 px-4 text-sm text-zinc-300" colSpan={3}>
               Mostrando 10 de 228 itens
             </TableCell>
-            <td
+            <TableCell
               className="py-3 px-4 text-sm text-zinc-300 text-right"
               colSpan={3}
             >
@@ -110,8 +120,8 @@ const AttendeeList = () => {
                   </IconButton>
                 </div>
               </div>
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         </tfoot>
       </Table>
     </div>
