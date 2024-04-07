@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 import {
   ChevronLeft,
@@ -28,6 +28,10 @@ const AttendeeList = () => {
 
   const [page,setPage] = useState<number>(1)
   const totalPages = Math.ceil(attendees.length) / 10
+
+  useEffect(() => {
+    fetch('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+  },[page]) 
 
   const goToPrevPage = () => {
     setPage(page - 1)
