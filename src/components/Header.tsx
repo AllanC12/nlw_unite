@@ -2,9 +2,8 @@ import nlwUniteIcon from '../assets/nlwUniteIcon.svg'
 
 import NavLink from './NavLink'
 
-type Props = {}
 
-const Header = (props: Props) => {
+const Header = () => {
   return (
     <div className='flex items-center gap-5 py-2'>
         <img src={nlwUniteIcon} alt="icone" />
